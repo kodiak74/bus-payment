@@ -23,60 +23,60 @@ import com.google.common.base.Strings;
 /**
  * Servlet implementation class AddDataFile
  */
- 
+
 @WebServlet(name = "AddDataFile", value = "/bp/data/add")
 public class AddDataServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AddDataServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("action", "Add");          // Part of the Header in form.jsp
-		request.setAttribute("destination", "/bp/data/add");  // The urlPattern to invoke (this Servlet)
-		request.setAttribute("page", "form");           // Tells base.jsp to include form.jsp
+	public AddDataServlet() {
+		super();
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.setAttribute("action", "Add"); // Part of the Header in form.jsp
+		request.setAttribute("destination", "/bp/data/add"); // The urlPattern to invoke (this Servlet)
+		request.setAttribute("page", "form"); // Tells base.jsp to include form.jsp
 		request.getRequestDispatcher("/base.jsp").forward(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 // [START storageHelper]
-	    assert ServletFileUpload.isMultipartContent(request);
-	    
-	    
-	    CloudStorageHelper storageHelper =   (CloudStorageHelper) getServletContext().getAttribute("storageHelper");
+		//Require mulitpart requests
+		assert ServletFileUpload.isMultipartContent(request);
 
-	    String dataFileURL = null;
-	    Map<String, String> params = new HashMap<String, String>();
-	    try {
-	      FileItemIterator iter = new ServletFileUpload().getItemIterator(request);
-	      while (iter.hasNext()) {
-	        FileItemStream item = iter.next();
-	        if (item.isFormField()) {
-	          params.put(item.getFieldName(), Streams.asString(item.openStream()));
-	        } else if (!Strings.isNullOrEmpty(item.getName())) {
-	        	dataFileURL = storageHelper.uploadFile(item, getServletContext().getInitParameter("datafile.bucket"));
-	          System.out.println("Uploaded datafile:" + dataFileURL);
-	        }
-	      }
-	    } catch (FileUploadException e) {
-	      throw new IOException(e);
-	    }
+		CloudStorageHelper storageHelper = (CloudStorageHelper) getServletContext().getAttribute("storageHelper");
 
-	  
-	   
-	      response.sendRedirect("/list" );   // Show what we have uploaded
-	  
+		String dataFileURL = null;
+		Map<String, String> params = new HashMap<String, String>();
+		try {
+			FileItemIterator iter = new ServletFileUpload().getItemIterator(request);
+			while (iter.hasNext()) {
+				FileItemStream item = iter.next();
+				if (item.isFormField()) {
+					params.put(item.getFieldName(), Streams.asString(item.openStream()));
+				} else if (!Strings.isNullOrEmpty(item.getName())) {
+					dataFileURL = storageHelper.uploadFile(item,
+							getServletContext().getInitParameter("datafile.bucket"));
+					System.out.println("Uploaded datafile:" + dataFileURL);
+				}
+			}
+		} catch (FileUploadException e) {
+			throw new IOException(e);
+		}
+
+		response.sendRedirect("/list");
+
 	}
 
 }

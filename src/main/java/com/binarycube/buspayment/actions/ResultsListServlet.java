@@ -1,5 +1,4 @@
 package com.binarycube.buspayment.actions;
- 
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,32 +10,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.binarycube.buspayment.util.CloudStorageHelper;
-import com.google.common.base.Strings;
-
- 
 @SuppressWarnings("serial")
 public class ResultsListServlet extends HttpServlet {
 
-  @Override
-  public void init() throws ServletException {
-     
+	@Override
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
-    
-  }
+		List<Map> results = new ArrayList<Map>();
+		req.getSession().getServletContext().setAttribute("results", results);
 
-  @Override
-  public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException,
-      ServletException {
-	  
-	  
-	 List<Map> results = new ArrayList<Map>();
-	 
-	 req.getSession().getServletContext().setAttribute("results", results);
-	 
-	 
-   
-    req.setAttribute("page", "results");
-    req.getRequestDispatcher("/base.jsp").forward(req, resp);
-  }
+		req.setAttribute("page", "results");
+		req.getRequestDispatcher("/base.jsp").forward(req, resp);
+	}
 }

@@ -88,8 +88,8 @@ public class CloudStorageHelper {
   // [END checkFileExtension]
   
   
-  public List<Map> getFiles( final String bucketName){
-	  List<Map> files = new ArrayList<Map>();
+  public List<Map<String,Object>> getFiles( final String bucketName){
+	  List<Map<String,Object>> files = new ArrayList<Map<String,Object>>();
 	  
 	  Page<Blob> blobs = storage.list(bucketName, BlobListOption.currentDirectory());  
 	  
