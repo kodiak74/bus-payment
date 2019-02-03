@@ -1,4 +1,4 @@
-# Bus Payment System
+# Bus Payment System - Core
 
 This is a demostration project to compute the journey details for passengers (and payment amounts) based on a "tap on"/tap off" data file (CSV).
 
@@ -35,7 +35,11 @@ Currently not implemented with any logging framework - exceptions just writen to
 
 ## Running
 
-Use the following command to process your source csv ("<in>") to the target output file ("<out>")
+Clone the repository locally, and run the maven install:
+   
+    $ mvn install
+
+Then use the following command to process your source csv ("<in>") to the target output file ("<out>")
 
     $ ./run.sh <in> <out>
 

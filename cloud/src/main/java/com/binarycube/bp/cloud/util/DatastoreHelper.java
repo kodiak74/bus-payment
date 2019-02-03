@@ -18,6 +18,7 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.QueryResultIterator;
+ 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -38,14 +39,12 @@ public class DatastoreHelper {
 		return gson.fromJson(json, clazz);
 	}
 
-	public UUID create(Map<String, Object> data) {
-		UUID uid = UUID.randomUUID();
-		Entity entity = new Entity(_kind, uid.toString());
+	public void create(String id, Map<String, Object> data) {
+		Entity entity = new Entity(_kind,id);
 		for (String key : data.keySet()) {
 			entity.setProperty(key, data.get(key));
 		}
 		_datastore.put(entity);
-		return uid;
 	}
 
 	public void update(UUID uid, Map<String, Object> data) {
@@ -80,13 +79,18 @@ public class DatastoreHelper {
 	    return result;
 	  }
 
-	public <T> ResultList<T> list(Class<T> clazz, String startCursorString, String sortby) {
+	public <T> ResultList<T> list(Class<T> clazz, String startCursorString, String sortby, String filter, String value) {
 	    FetchOptions fetchOptions = FetchOptions.Builder.withLimit(10); // Only show 10 at a time
 	    if (startCursorString != null && !startCursorString.equals("")) {
 	      fetchOptions.startCursor(Cursor.fromWebSafeString(startCursorString)); // Where we left off
 	    }
 	    Query query = new Query(_kind); 
 	    if (sortby != null) query.addSort(sortby, SortDirection.ASCENDING);  
+	    
+	    if (filter != null) {
+	    	query.setFilter(new Query.FilterPredicate(filter, Query.FilterOperator.EQUAL, value));
+	    }
+	    
 	    PreparedQuery preparedQuery = _datastore.prepare(query);
 	    QueryResultIterator<Entity> results = preparedQuery.asQueryResultIterator(fetchOptions);
 

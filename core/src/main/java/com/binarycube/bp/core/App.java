@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 
+import com.binarycube.bp.core.model.ProcessingBatch;
+
 /**
  * Core commandline interface for running bus payment system
  *
@@ -32,16 +34,20 @@ public class App {
 		
 		//Check output file exists
 		File outFile = new File(args[1]);
-		if (!outFile.exists()) System.out.println( "Onput file '"+ args[1] + "' exists and will be overwritten." );
+		if (!outFile.exists()) System.out.println( "Output file '"+ args[1] + "' exists and will be overwritten." );
 
 		//And pass reader and writer to core processor
 		try {
 			Writer outWriter = new FileWriter(outFile, false);
 			Reader inReader = new FileReader(inFile);
 			ITripProcessor tripProcessor = new TripFileProcessor(outWriter);
-			BusPaymentProcesser bpp = new BusPaymentProcesser(inReader, tripProcessor);
-			if (bpp.run() == 0) System.out.println("Processed successfully");
-			else System.out.println("Processing error: " + bpp.getError());
+			BusPaymentProcesser bpp = new BusPaymentProcesser(args[0], inReader, tripProcessor);
+			ProcessingBatch pb = bpp.run();
+			
+			if (pb.getStatus() == 0) {
+				System.out.println(pb.toString());
+			}
+			else System.out.println("Processing error: " + pb.getMessage());
 			//Cleanup
 		    inReader.close();
 		    outWriter.close();

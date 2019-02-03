@@ -1,7 +1,5 @@
 package com.binarycube.bp.cloud;
 
-import com.google.appengine.api.utils.SystemProperty;
-
 import java.io.IOException;
 import java.util.Properties;
 
@@ -9,6 +7,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.appengine.api.utils.SystemProperty;
 
 @WebServlet(name = "BusPaymentCore", value = "/bp")
 public class BusPaymentCore extends HttpServlet{

@@ -1,0 +1,9 @@
+indexes:
+
+- kind: TRIP
+  ancestor: no
+  properties:
+  - name: batchID
+    direction: asc
+  - name: started
+    direction: asc

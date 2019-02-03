@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import com.binarycube.bp.core.util.DateUtil;
 import com.binarycube.bp.core.util.StringUtil;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * Leverages the Builder pattern to construct a Trip object.
@@ -16,7 +18,7 @@ import com.binarycube.bp.core.util.StringUtil;
  */
 
 public class Trip {
-	private UUID tripID, tapOn, tapOff;
+	private UUID tripID, batchID;
 	private Date started, finished;
 	private long duration;
 	private String fromStop, toStop;
@@ -24,9 +26,10 @@ public class Trip {
 	private String companyID, busID, pan, status;
 
 	private Trip(Builder b) {
+		
 		this.tripID = b.tripID;
-		this.tapOn = b.tapOn;
-		this.tapOff = b.tapOff;
+		this.batchID = b.batchID;
+		 
 		this.started = b.started;
 		this.finished = b.finished;
 		this.duration = b.duration;
@@ -42,7 +45,7 @@ public class Trip {
 	public static class Builder {
 
 		private UUID tripID = UUID.randomUUID();
-		private UUID tapOn, tapOff;
+		private UUID batchID;
 		private Date started, finished;
 		private long duration;
 		private String fromStop, toStop;
@@ -54,15 +57,12 @@ public class Trip {
 			return this;
 		}
 
-		public Builder tapOn(UUID tapOn) {
-			this.tapOn = tapOn;
+		public Builder batchID(UUID batchID) {
+			this.batchID = batchID;
 			return this;
 		}
 
-		public Builder tapOff(UUID tapOff) {
-			this.tapOff = tapOff;
-			return this;
-		}
+	 
 
 		public Builder started(Date started) {
 			this.started = started;
@@ -134,22 +134,15 @@ public class Trip {
 		this.tripID = tripID;
 	}
 
-	public UUID getTapOn() {
-		return tapOn;
+	public UUID getBatchID() {
+		return batchID;
 	}
 
-	public void setTapOn(UUID tapOn) {
-		this.tapOn = tapOn;
+	public void setBatchID(UUID x) {
+		this.batchID = x;
 	}
 
-	public UUID getTapOff() {
-		return tapOff;
-	}
-
-	public void setTapOff(UUID tapOff) {
-		this.tapOff = tapOff;
-	}
-
+	 
 	public Date getStarted() {
 		return started;
 	}
@@ -249,9 +242,15 @@ public class Trip {
 		buffer.append(StringUtil.getString(busID)).append(",");
 		buffer.append(StringUtil.getString(pan)).append(",");
 		buffer.append(status);
-
 		return buffer.toString();
-
 	}
+
+	
+	
+	public String toJSON() {
+		Gson gson = new GsonBuilder().create();
+		return  gson.toJson(this);
+	}
+	
 
 }

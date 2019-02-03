@@ -3,6 +3,7 @@ package com.binarycube.bp.core;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.util.Date;
+import java.util.UUID;
 
 import org.junit.After;
 import org.junit.Before;
@@ -48,6 +49,13 @@ public class TestUtilities {
 		assertThat(parsed != null);
 	}
 	 
+	
+	@Test
+	public void test_String_Utility_UUID() throws Exception {
+		UUID source = UUID.randomUUID();
+		String parsed = StringUtil.getString(source);
+		assertThat(parsed == source.toString());
+	}
 	 
 	
 }

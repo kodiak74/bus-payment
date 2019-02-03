@@ -1,7 +1,9 @@
 package com.binarycube.bp.cloud.util;
 import java.io.IOException;
-import java.time.Instant;
-import java.time.ZoneOffset;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.channels.Channels;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -16,28 +18,28 @@ import javax.servlet.ServletException;
 import org.apache.commons.fileupload.FileItemStream;
 
 import com.google.api.gax.paging.Page;
+import com.google.cloud.ReadChannel;
 import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.Acl.Role;
 import com.google.cloud.storage.Acl.User;
 import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.Storage.BlobListOption;
 import com.google.cloud.storage.StorageOptions;
  
 
-// [START example]
+ 
 public class CloudStorageHelper {
 
   private static Storage storage = null;
 
-  // [START init]
+ 
   static {
     storage = StorageOptions.getDefaultInstance().getService();
   }
-  // [END init]
-
-  // [START uploadFile]
+  
   /**
    * Uploads a file to Google Cloud Storage to the bucket specified in the BUCKET_NAME
    * environment variable, appending a timestamp to end of the uploaded filename.
@@ -48,10 +50,7 @@ public class CloudStorageHelper {
     checkFileExtension(fileStream.getName());
 
     ZonedDateTime date = ZonedDateTime.now();
-    /*
-    DateTimeFormatter dtf = DateTimeFormat.forPattern("-YYYY-MM-dd-HHmmssSSS");
-    DateTime dt = DateTime.now(DateTimeZone.UTC);
-    */
+ 
     String dtString = DateTimeFormatter.ofPattern("-YYYY-MM-dd-HHmmssSSS").format(date);
     final String fileName = fileStream.getName() + dtString;
 
@@ -67,9 +66,7 @@ public class CloudStorageHelper {
     // return the public download link
     return blobInfo.getMediaLink();
   }
-  // [END uploadFile]
-
-  // [START checkFileExtension]
+   
 
   /**
    * Checks that the file extension is supported.
@@ -85,9 +82,37 @@ public class CloudStorageHelper {
       throw new ServletException("File must be a CSV.");
     }
   }
-  // [END checkFileExtension]
+ 
+  
+  /**
+   * Get a reader for the file from Cloud Storage
+   */
+  public Reader getFileReader(final String filename, final String bucketName) {
+	  Reader rdr = null;
+	  Blob blob = storage.get(BlobId.of(bucketName, filename));
+	  ReadChannel rc =blob.reader();
+	  InputStream inputStream =  Channels.newInputStream(rc);
+	  rdr = new InputStreamReader(inputStream);
+	  return rdr;
+  }
   
   
+  /**
+   * Get a reader for the file from Cloud Storage
+   */
+  public boolean deleteFile(final String filename, final String bucketName) {
+	  return storage.delete(BlobId.of(bucketName, filename));
+  }
+  
+  
+  
+  
+  /** 
+   * List all files in a bucket
+   * 
+   * @param bucketName
+   * @return
+   */
   public List<Map<String,Object>> getFiles( final String bucketName){
 	  List<Map<String,Object>> files = new ArrayList<Map<String,Object>>();
 	  
@@ -108,4 +133,4 @@ public class CloudStorageHelper {
   }
   
 }
-// [END example]
+ 

@@ -3,9 +3,6 @@ package com.binarycube.bp.cloud;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
-import com.binarycube.bp.cloud.BusPaymentCore;
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -19,6 +16,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
 /**
  * Unit tests for Cloud components

@@ -20,6 +20,14 @@
   </properties>
   <dependencies>
     <!-- Compile/runtime dependencies -->
+    
+     <dependency>
+      <groupId>com.binarycube.bp</groupId>
+      <artifactId>core</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    
+    
     <!-- App Engine SDK dependency : only required if you need to explicitly use App Engine API -->
     <dependency>
       <groupId>com.google.appengine</groupId>
@@ -81,6 +89,8 @@
       <artifactId>google-cloud-storage</artifactId>
       <version>1.54.0</version>
     </dependency>
+    
+ 
     
       <dependency>                        <!-- http://commons.apache.org/proper/commons-fileupload/ -->
       <groupId>commons-fileupload</groupId>

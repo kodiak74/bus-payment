@@ -1,31 +1,17 @@
 # Bus Payment System
 
-Is a demostration project to compute the journey details for passengers (and payment amounts) based on a "tap on"/tap off" data file (CSV).
+Is a demostration project to compute the trip details for passengers (and payment amounts) based on a "tap on"/tap off" data file (CSV).
+
 
 
 ## Implementation
 
-This is implemented using the Google Cloud Platform App Engine service. 
+This project has a commandline version (core) and a Google Cloud Platform implementation (cloud), which leverages the core project through a simple web interface.
 
-The project consists of a number of JSP's to render a front end, and a number of Servlets to provide a mini web API to perform the core operations.
+For details on each of the projects, and how to run them view their respective Readme files:
 
-
-
-## Maven
-### Running locally
-
-    mvn appengine:run
-
-To use vist: http://localhost:8080/
-
-### Deploying
-
-    mvn appengine:deploy
-
-To use vist:  https://bus-payment-101.appspot.com
+[Core](/core/Readme.md)
 
 
-
-## Testing
-
-    mvn verify
+[Cloud](/cloud/Readme.md)
+ 
