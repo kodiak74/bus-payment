@@ -29,3 +29,5 @@ To use vist:  https://bus-payment-101.appspot.com
 ## Testing
 
     mvn verify
+    
+[Core](/core/Readme.md)
