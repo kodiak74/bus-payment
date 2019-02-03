@@ -14,4 +14,3 @@ For details on each of the projects, and how to run them view their respective R
 
 
 [Cloud](/cloud/Readme.md)
- 
