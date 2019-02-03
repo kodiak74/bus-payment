@@ -39,7 +39,7 @@ Clone the repository locally, and run the maven install:
    
     $ mvn install
 
-Then use the following command to process your source csv ("<in>") to the target output file ("<out>")
+Then use the following command to process your source csv "in" to the target output file "out".
 
     $ ./run.sh <in> <out>
 
